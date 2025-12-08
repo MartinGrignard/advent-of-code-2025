@@ -3,9 +3,10 @@
 https://adventofcode.com/2025/day/5
 """
 
+from typing import Iterable
 import pytest
 
-from main import Range, Ranges
+from main import collapse_ranges, Range, Ranges
 
 
 @pytest.mark.parametrize(
@@ -42,3 +43,18 @@ def test_range_contains(value: int, expected_answer: bool) -> None:
 )
 def test_ranges_contains(value: int, expected_answer: bool) -> None:
     assert (value in Ranges([Range(1, 3), Range(8, 10)])) == expected_answer
+
+
+@pytest.mark.parametrize(
+    ("ranges", "expected_ranges"),
+    [
+        ([Range(0, 1), Range(3, 4)], [Range(0, 1), Range(3, 4)]),
+        ([Range(0, 1), Range(1, 2)], [Range(0, 2)]),
+        ([Range(0, 2), Range(1, 3)], [Range(0, 3)]),
+        ([Range(1, 2), Range(0, 3)], [Range(0, 3)]),
+    ],
+)
+def test_collapse_ranges(
+    ranges: Iterable[Range], expected_ranges: Iterable[Range]
+) -> None:
+    assert collapse_ranges(ranges) == list(expected_ranges)
