@@ -32,7 +32,9 @@ def parse_clicks(string: str) -> int:
     return (-1 + 2 * int(string[0] == "R")) * int(string[1:])
 
 
-def follow_instructions(dial: Dial, instructions: Iterable[int], callback: Callable[[Dial], None]) -> None:
+def follow_instructions(
+    dial: Dial, instructions: Iterable[int], callback: Callable[[Dial], None]
+) -> None:
     """Apply a series of rotations to the dial."""
     for clicks in instructions:
         dial.rotate(clicks)
@@ -47,7 +49,7 @@ def count_ends_on(position: int, dial: Dial, instructions: Iterable[int]) -> int
         nonlocal count
         if dial.position == position:
             count += 1
-    
+
     follow_instructions(dial, instructions, callback)
     return count
 
