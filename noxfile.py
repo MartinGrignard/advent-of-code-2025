@@ -42,3 +42,15 @@ def init(session: Session) -> None:
         "template",
         f"day={day.day}",
     )
+
+
+@nox.session(python=False)
+def test(session: Session) -> None:
+    """Test the implementation of a solution."""
+    day = Day.from_session(session)
+    session.run(
+        "uv",
+        "run",
+        "pytest",
+        str(day.test_script),
+    )
