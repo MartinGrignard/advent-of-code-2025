@@ -77,7 +77,7 @@ def main() -> None:
     ranges = []
     while string := next(sys.stdin).strip():
         ranges.append(Range.from_string(string))
-    ranges = Ranges(ranges)
+    ranges = Ranges(collapse_ranges(ranges))
 
     ingredients = (int(string) for string in sys.stdin)
     print(count_fresh_ingredients(ranges, ingredients))
