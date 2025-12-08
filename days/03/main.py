@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/3
 """
 
+import itertools
 import sys
 from typing import Generator, Iterable
 
@@ -41,8 +42,9 @@ def sum_banks_joltages(banks: Iterable[Iterable[int]], size: int) -> int:
 
 
 def main() -> None:
-    banks = (parse_joltages(string) for string in sys.stdin)
-    print(sum_banks_joltages(banks, 2))
+    banks = itertools.tee((list(parse_joltages(string)) for string in sys.stdin), 2)
+    print(sum_banks_joltages(banks[0], 2))
+    print(sum_banks_joltages(banks[1], 12))
 
 
 if __name__ == "__main__":
