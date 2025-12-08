@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/6
 """
 
+import operator
 import re
 from typing import Literal, TextIO, TypeAlias
 
@@ -21,6 +22,19 @@ def parse_problems(strings: TextIO) -> list[Problem]:
     ]
     values = zip(*[[int(number) for number in row] for row in rows[:-1]])
     return list(zip(rows[-1], values))
+
+
+def execute_problem(problem: Problem) -> int:
+    """Execute a problem."""
+    operation = {
+        "+": operator.add,
+        "*": operator.mul,
+    }[problem[0]]
+    values = problem[1]
+    result = values[0]
+    for value in values[1:]:
+        result = operation(result, value)
+    return result
 
 
 def main() -> None: ...
