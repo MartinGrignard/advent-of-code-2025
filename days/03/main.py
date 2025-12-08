@@ -35,6 +35,24 @@ class Index:
             if before > nth:
                 return joltage
 
+    def get_n_highest(self: Self, n: int) -> list[int]:
+        """Retrieve the n highest voltages in order."""
+        highests: list[tuple[int, int]] = []
+        before = 0
+        current = 0
+        nth = 0
+        for joltage in range(9, 0, -1):
+            positions = self._index[joltage - 1]
+            current = len(positions)
+            while before + current > nth:
+                index = len(highests) - before
+                highests.append((positions[index], joltage))
+                nth += 1
+                if nth == n:
+                    return [joltage for _, joltage in sorted(highests)]
+            before += current
+            current = 0
+
 
 def parse_joltages(string: str) -> Generator[int, None, None]:
     """Convert a string into its integer joltages."""
