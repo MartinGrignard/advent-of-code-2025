@@ -10,19 +10,38 @@ from typing import Callable, Iterable, Self
 
 @dataclass
 class Rotation:
+    """A rotation of the dial."""
     clicks: int
     clicks_per_turn: int
     start: int
 
     @property
     def clicks_in_last_turn(self: Self) -> int:
-        return self.clicks % self.clicks_per_turn
+        """The number of clicks remaining after full turns."""
+        if self.clicks == 0:
+            return 0
+        return (self.clicks // abs(self.clicks)) * (abs(self.clicks) % self.clicks_per_turn)
+    
+    @property
+    def full_turns_count(self: Self) -> int:
+        """The number of full turns."""
+        return abs(self.clicks) // self.clicks_per_turn
 
     @property
     def end(self: Self) -> int:
+        """The end position of the rotation."""
         return (
             self.clicks_per_turn + self.start + self.clicks_in_last_turn
         ) % self.clicks_per_turn
+    
+    def passes_by_in_last_turn(self: Self, position: int) -> bool:
+        """Check whether the rotation passes by a position during the last turn."""
+        distance = position - self.start
+        if distance < 0 and self.clicks_in_last_turn > 0:
+            distance = (position + self.clicks_per_turn) - self.start
+        elif distance > 0 and self.clicks_in_last_turn < 0:
+            distance = (position - self.clicks_per_turn) - self.start
+        return abs(distance) < abs(self.clicks_in_last_turn)
 
 
 class Dial:
