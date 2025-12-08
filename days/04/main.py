@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/4
 """
 
+import sys
 from typing import TextIO
 
 import numpy as np
@@ -30,7 +31,9 @@ def count_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
     )
 
 
-def main() -> None: ...
+def main() -> None:
+    diagram = parse_diagram(sys.stdin)
+    print(count_accessible_scrolls(diagram, 4))
 
 
 if __name__ == "__main__":
