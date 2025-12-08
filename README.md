@@ -10,6 +10,7 @@ This repository contains my solutions to the [Advent of Code 2025][advent-of-cod
 | ------- | -------- | ----- |
 | [Day 1: Secret Entrance](https://adventofcode.com/2025/day/1) | [📄](./days/01/main.py) | 🌟🌟 |
 | [Day 2: Gift Shop](https://adventofcode.com/2025/day/2)  | [📄](./days/02/main.py) | 🌟🌟 |
+| [Day 3: Lobby](https://adventofcode.com/2025/day/3)  | [📄](./days/03/main.py) | 🌟🌟 |
 
 ___
 
