@@ -9,7 +9,8 @@ import re
 from typing import Generator, Iterable, Self
 
 
-REPEATING_NUMBER_PATTERN = re.compile(r"^(\d+)\1$")
+REPEATING_TWICE_PATTERN = re.compile(r"^(\d+)\1$")
+REPEATING_PATTERN = re.compile(r"^(\d+)\1+$")
 
 
 @dataclass
@@ -29,10 +30,15 @@ class Range:
         """Parse a range form a string."""
         return cls(*[int(part) for part in string.split("-")])
 
-    def get_invalid_ids(self: Self) -> Generator[int, None, None]:
+    def get_invalid_ids(
+        self: Self, allow_more_than_twice: bool = False
+    ) -> Generator[int, None, None]:
         """Extract the invalid product IDs of the range."""
+        pattern = REPEATING_TWICE_PATTERN
+        if allow_more_than_twice:
+            pattern = REPEATING_PATTERN
         for product_id in range(self.start, self.end + 1):
-            if REPEATING_NUMBER_PATTERN.match(str(product_id)) is not None:
+            if pattern.match(str(product_id)) is not None:
                 yield product_id
 
 
