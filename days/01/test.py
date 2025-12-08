@@ -3,9 +3,10 @@
 https://adventofcode.com/2025/day/1
 """
 
+from typing import Iterable
 import pytest
 
-from main import Dial, parse_clicks
+from main import Dial, count_ends_on, parse_clicks
 
 
 @pytest.mark.parametrize(
@@ -35,3 +36,16 @@ def test_parse_clicks(string: str, expected_clicks: int) -> None:
 def test_dial_rotate(dial: Dial, clicks: int, expected_position: int) -> None:
     dial.rotate(clicks)
     assert dial.position == expected_position
+
+
+@pytest.mark.parametrize(
+    ("instructions", "expected_count"),
+    [
+        ([2], 0),
+        ([1], 1),
+        ([1, 1], 1),
+        ([1, 2], 2),
+    ],
+)
+def test_count_ends_on(instructions: Iterable[int], expected_count: int) -> None:
+    assert count_ends_on(1, Dial(2, 0), instructions) == expected_count
