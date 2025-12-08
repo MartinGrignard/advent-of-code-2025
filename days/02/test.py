@@ -36,7 +36,9 @@ def test_range_from_string(string: str, expected_ends: tuple[int, int]) -> None:
 def test_range_get_invalid_ids(
     range: Range, allow_more_than_twice: bool, expected_invalid_ids: Iterable[int]
 ) -> None:
-    assert list(range.get_invalid_ids(allow_more_than_twice)) == list(expected_invalid_ids)
+    assert list(range.get_invalid_ids(allow_more_than_twice)) == list(
+        expected_invalid_ids
+    )
 
 
 @pytest.mark.parametrize(
