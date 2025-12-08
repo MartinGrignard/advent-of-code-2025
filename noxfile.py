@@ -26,6 +26,10 @@ class Day:
     def input(self: Self) -> Path:
         return self.directory / "input.txt"
 
+    @property
+    def test_input(self: Self) -> Path:
+        return self.directory / "test_input.txt"
+
     @classmethod
     def from_session(cls: type[Self], session: Session) -> Self:
         day = int((session.posargs or ["1"])[0])
@@ -65,3 +69,10 @@ def run(session: Session) -> None:
     """Run a solution."""
     day = Day.from_session(session)
     session.run("bash", "-c", f"uv run {day.main_script} < {day.input}")
+
+
+@nox.session(python=False, name="run-test")
+def run_test(session: Session) -> None:
+    """Run a solution on its test input."""
+    day = Day.from_session(session)
+    session.run("bash", "-c", f"uv run {day.main_script} < {day.test_input}")
