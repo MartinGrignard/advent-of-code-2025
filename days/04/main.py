@@ -17,8 +17,8 @@ def parse_diagram(diagram: TextIO) -> np.ndarray:
     )
 
 
-def count_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
-    """Count the scrolls with less than a specific amount of adjacent scrolls."""
+def get_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
+    """Get a map of the available scrolls."""
     kernel = np.array(
         [
             [1, 1, 1],
@@ -26,9 +26,12 @@ def count_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
             [1, 1, 1],
         ]
     )
-    return np.count_nonzero(
-        np.bitwise_and(convolve2d(diagram, kernel, mode="same") < threshold, diagram)
-    )
+    return np.bitwise_and(convolve2d(diagram, kernel, mode="same") < threshold, diagram)
+
+
+def count_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
+    """Count the scrolls with less than a specific amount of adjacent scrolls."""
+    return np.count_nonzero(get_accessible_scrolls(diagram, threshold))
 
 
 def main() -> None:
