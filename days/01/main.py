@@ -86,9 +86,22 @@ def count_ends_on(position: int, dial: Dial, instructions: Iterable[int]) -> int
 
     def callback(rotation: Rotation) -> None:
         nonlocal count
-        if rotation.end == position:
-            count += 1
+        count += rotation.end == position
 
+    follow_instructions(dial, instructions, callback)
+    return count
+
+
+def count_passes_by(position: int, dial: Dial, instructions: Iterable[int]) -> int:
+    """Count the number of times the dial passes by a given position."""
+    count = 0
+
+    def callback(rotation: Rotation) -> None:
+        nonlocal count
+        count += rotation.full_turns_count
+        count += rotation.passes_by_in_last_turn(position)
+        count += rotation.end == position
+    
     follow_instructions(dial, instructions, callback)
     return count
 
