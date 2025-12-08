@@ -4,8 +4,9 @@ https://adventofcode.com/2025/day/2
 """
 
 from dataclasses import dataclass
+import itertools
 import re
-from typing import Generator, Self
+from typing import Generator, Iterable, Self
 
 
 REPEATING_NUMBER_PATTERN = re.compile(r"^(\d+)\1$")
@@ -33,6 +34,11 @@ class Range:
         for product_id in range(self.start, self.end + 1):
             if REPEATING_NUMBER_PATTERN.match(str(product_id)) is not None:
                 yield product_id
+
+
+def sum_invalid_ids(ranges: Iterable[Range]) -> int:
+    """Sum all invalid product IDs from a set of ranges."""
+    return sum(itertools.chain(*(id_range.get_invalid_ids() for id_range in ranges)))
 
 
 def main() -> None: ...
