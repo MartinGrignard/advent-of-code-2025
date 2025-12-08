@@ -4,7 +4,8 @@ https://adventofcode.com/2025/day/5
 """
 
 from dataclasses import dataclass
-from typing import Self
+import sys
+from typing import Iterable, Self
 
 
 @dataclass
@@ -43,7 +44,23 @@ class Ranges:
         return False
 
 
-def main() -> None: ...
+def count_fresh_ingredients(ranges: Ranges, ingredients: Iterable[int]) -> int:
+    """Count fresh ingredients."""
+    count = 0
+    for ingredient in ingredients:
+        if ingredient in ranges:
+            count += 1
+    return count
+
+
+def main() -> None:
+    ranges = []
+    while string := next(sys.stdin).strip():
+        ranges.append(Range.from_string(string))
+    ranges = Ranges(ranges)
+
+    ingredients = (int(string) for string in sys.stdin)
+    print(count_fresh_ingredients(ranges, ingredients))
 
 
 if __name__ == "__main__":
