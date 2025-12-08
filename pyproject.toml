@@ -5,3 +5,12 @@ description = "Let's solve Advent of Code 2025! 🎄"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "beautifulsoup4>=4.14.3",
+    "cookiecutter>=2.6.0",
+    "httpx>=0.28.1",
+    "nox>=2025.11.12",
+    "pytest>=9.0.2",
+]
