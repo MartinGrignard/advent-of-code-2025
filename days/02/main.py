@@ -41,7 +41,9 @@ def sum_invalid_ids(ranges: Iterable[Range]) -> int:
     return sum(itertools.chain(*(id_range.get_invalid_ids() for id_range in ranges)))
 
 
-def main() -> None: ...
+def main() -> None:
+    ranges = (Range.from_string(string) for string in input().split(","))
+    print(sum_invalid_ids(ranges))
 
 
 if __name__ == "__main__":
