@@ -3,8 +3,26 @@
 https://adventofcode.com/2025/day/1
 """
 
+from dataclasses import dataclass
 import sys
 from typing import Callable, Iterable, Self
+
+
+@dataclass
+class Rotation:
+    clicks: int
+    clicks_per_turn: int
+    start: int
+
+    @property
+    def clicks_in_last_turn(self: Self) -> int:
+        return self.clicks % self.clicks_per_turn
+
+    @property
+    def end(self: Self) -> int:
+        return (
+            self.clicks_per_turn + self.start + self.clicks_in_last_turn
+        ) % self.clicks_per_turn
 
 
 class Dial:
@@ -22,10 +40,11 @@ class Dial:
     def position(self: Self) -> int:
         return self._position
 
-    def rotate(self: Self, clicks: int) -> None:
+    def rotate(self: Self, clicks: int) -> Rotation:
         """Rotate the dial."""
-        rotation = clicks % self.size
-        self._position = (self.size + self._position + rotation) % self.size
+        rotation = Rotation(clicks, self.size, self.position)
+        self._position = rotation.end
+        return rotation
 
 
 def parse_clicks(string: str) -> int:
@@ -34,21 +53,21 @@ def parse_clicks(string: str) -> int:
 
 
 def follow_instructions(
-    dial: Dial, instructions: Iterable[int], callback: Callable[[Dial], None]
+    dial: Dial, instructions: Iterable[int], callback: Callable[[Rotation], None]
 ) -> None:
     """Apply a series of rotations to the dial."""
     for clicks in instructions:
-        dial.rotate(clicks)
-        callback(dial)
+        rotation = dial.rotate(clicks)
+        callback(rotation)
 
 
 def count_ends_on(position: int, dial: Dial, instructions: Iterable[int]) -> int:
     """Count the number of times the dial ends on a given position."""
     count = 0
 
-    def callback(dial: Dial) -> None:
+    def callback(rotation: Rotation) -> None:
         nonlocal count
-        if dial.position == position:
+        if rotation.end == position:
             count += 1
 
     follow_instructions(dial, instructions, callback)
