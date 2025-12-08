@@ -22,6 +22,10 @@ class Range:
     def __eq__(self: Self, other: Self) -> bool:
         """Check whether two ranges are equal."""
         return self.bounds == other.bounds
+    
+    def __len__(self: Self) -> int:
+        """The number of IDs lying within the range."""
+        return self.upper - self.lower + 1
 
     @property
     def bounds(self: Self) -> tuple[int, int]:
@@ -46,6 +50,9 @@ class Ranges:
             if value in id_range:
                 return True
         return False
+    
+    def __len__(self: Self) -> int:
+        return sum(len(id_range) for id_range in self.ranges)
 
 
 def collapse_ranges(ranges: Iterable[Range]) -> list[Range]:
@@ -73,6 +80,11 @@ def count_fresh_ingredients(ranges: Ranges, ingredients: Iterable[int]) -> int:
     return count
 
 
+def count_possibly_fresh_ingredients(ranges: Ranges) -> int:
+    """Count the number of ingredients that are potentially fresh."""
+    return len(ranges)
+
+
 def main() -> None:
     ranges = []
     while string := next(sys.stdin).strip():
@@ -81,6 +93,7 @@ def main() -> None:
 
     ingredients = (int(string) for string in sys.stdin)
     print(count_fresh_ingredients(ranges, ingredients))
+    print(count_possibly_fresh_ingredients(ranges))
 
 
 if __name__ == "__main__":
