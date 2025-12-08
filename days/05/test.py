@@ -17,3 +17,16 @@ from main import Range
 )
 def test_range_from_string(string: str, expected_range: tuple[int, int]) -> None:
     assert Range.from_string(string).bounds == expected_range
+
+
+@pytest.mark.parametrize(
+    ("value", "expected_answer"),
+    [
+        (1, True),
+        (3, True),
+        (0, False),
+        (4, False),
+    ],
+)
+def test_range_contains(value: int, expected_answer: bool) -> None:
+    assert (value in Range(1, 3)) == expected_answer
