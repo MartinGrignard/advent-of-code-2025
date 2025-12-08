@@ -1,0 +1,7 @@
+{
+  "day": 1,
+  "__day_padded": "{{ '%02d' % (cookiecutter.day | int) }}",
+  "__day_url": "{{ cookiecutter.day | day_url }}",
+  "__day_title": "{{ cookiecutter.day | day_title }}",
+  "_extensions": ["extensions.AdventOfCodeExtension"]
+}
