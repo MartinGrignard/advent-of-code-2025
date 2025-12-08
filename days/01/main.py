@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/1
 """
 
+import sys
 from typing import Callable, Iterable, Self
 
 
@@ -54,7 +55,9 @@ def count_ends_on(position: int, dial: Dial, instructions: Iterable[int]) -> int
     return count
 
 
-def main() -> None: ...
+def main() -> None:
+    instructions = (parse_clicks(string) for string in sys.stdin)
+    print(count_ends_on(0, Dial(100, 50), instructions))
 
 
 if __name__ == "__main__":
