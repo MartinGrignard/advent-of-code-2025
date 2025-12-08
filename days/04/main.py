@@ -34,6 +34,12 @@ def count_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
     return np.count_nonzero(get_accessible_scrolls(diagram, threshold))
 
 
+def remove_accessible_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
+    """Remove the accessible scrolls."""
+    accessible_scrolls = get_accessible_scrolls(diagram, threshold)
+    return np.bitwise_xor(diagram, accessible_scrolls)
+
+
 def main() -> None:
     diagram = parse_diagram(sys.stdin)
     print(count_accessible_scrolls(diagram, 4))
