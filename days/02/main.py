@@ -42,9 +42,15 @@ class Range:
                 yield product_id
 
 
-def sum_invalid_ids(ranges: Iterable[Range]) -> int:
+def sum_invalid_ids(
+    ranges: Iterable[Range], allow_more_than_twice: bool = False
+) -> int:
     """Sum all invalid product IDs from a set of ranges."""
-    return sum(itertools.chain(*(id_range.get_invalid_ids() for id_range in ranges)))
+    return sum(
+        itertools.chain(
+            *(id_range.get_invalid_ids(allow_more_than_twice) for id_range in ranges)
+        )
+    )
 
 
 def main() -> None:
