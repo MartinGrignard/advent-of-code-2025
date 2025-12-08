@@ -14,6 +14,10 @@ class Range:
     lower: int
     upper: int
 
+    def __contains__(self: Self, value: int) -> bool:
+        """Check if a value lies within the range."""
+        return self.lower <= value <= self.upper
+
     @property
     def bounds(self: Self) -> tuple[int, int]:
         """The bounds of the range."""
@@ -21,6 +25,7 @@ class Range:
 
     @classmethod
     def from_string(cls: type[Self], string: str) -> Self:
+        """Parse a range from a string."""
         return cls(*[int(number) for number in string.split("-")])
 
 
