@@ -19,6 +19,10 @@ class Range:
         """Check if a value lies within the range."""
         return self.lower <= value <= self.upper
 
+    def __eq__(self: Self, other: Self) -> bool:
+        """Check whether two ranges are equal."""
+        return self.bounds == other.bounds
+
     @property
     def bounds(self: Self) -> tuple[int, int]:
         """The bounds of the range."""
@@ -42,6 +46,22 @@ class Ranges:
             if value in id_range:
                 return True
         return False
+
+
+def collapse_ranges(ranges: Iterable[Range]) -> list[Range]:
+    """Collapse a series of ranges."""
+    ranges = sorted(ranges, key=lambda id_range: id_range.bounds)
+    collapsed_ranges: list[Range] = [ranges[0]]
+    for current_range in ranges[1:]:
+        last_range = collapsed_ranges[-1]
+        if current_range.lower in last_range:
+            collapsed_ranges[-1] = Range(
+                min(last_range.lower, current_range.lower),
+                max(last_range.upper, current_range.upper),
+            )
+        else:
+            collapsed_ranges.append(current_range)
+    return collapsed_ranges
 
 
 def count_fresh_ingredients(ranges: Ranges, ingredients: Iterable[int]) -> int:
