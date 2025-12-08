@@ -5,7 +5,7 @@ https://adventofcode.com/2025/day/5
 
 import pytest
 
-from main import Range
+from main import Range, Ranges
 
 
 @pytest.mark.parametrize(
@@ -30,3 +30,15 @@ def test_range_from_string(string: str, expected_range: tuple[int, int]) -> None
 )
 def test_range_contains(value: int, expected_answer: bool) -> None:
     assert (value in Range(1, 3)) == expected_answer
+
+
+@pytest.mark.parametrize(
+    ("value", "expected_answer"),
+    [
+        (1, True),
+        (8, True),
+        (5, False),
+    ],
+)
+def test_ranges_contains(value: int, expected_answer: bool) -> None:
+    assert (value in Ranges([Range(1, 3), Range(8, 10)])) == expected_answer
