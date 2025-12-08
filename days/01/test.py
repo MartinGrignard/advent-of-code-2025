@@ -64,9 +64,11 @@ def test_count_ends_on(instructions: Iterable[int], expected_count: int) -> None
         (Rotation(-2, 3, 0), 1, False),
         (Rotation(2, 3, 2), 0, True),
         (Rotation(2, 3, 2), 1, False),
-    ]
+    ],
 )
-def test_rotation_passes_by(rotation: Rotation, position: int, expected_answer: bool) -> None:
+def test_rotation_passes_by(
+    rotation: Rotation, position: int, expected_answer: bool
+) -> None:
     assert rotation.passes_by_in_last_turn(position) == expected_answer
 
 

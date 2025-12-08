@@ -25,7 +25,7 @@ class Day:
     @property
     def input(self: Self) -> Path:
         return self.directory / "input.txt"
-    
+
     @property
     def test_input(self: Self) -> Path:
         return self.directory / "test_input.txt"

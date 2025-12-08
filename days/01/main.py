@@ -12,6 +12,7 @@ from typing import Callable, Iterable, Self
 @dataclass
 class Rotation:
     """A rotation of the dial."""
+
     clicks: int
     clicks_per_turn: int
     start: int
@@ -21,8 +22,10 @@ class Rotation:
         """The number of clicks remaining after full turns."""
         if self.clicks == 0:
             return 0
-        return (self.clicks // abs(self.clicks)) * (abs(self.clicks) % self.clicks_per_turn)
-    
+        return (self.clicks // abs(self.clicks)) * (
+            abs(self.clicks) % self.clicks_per_turn
+        )
+
     @property
     def full_turns_count(self: Self) -> int:
         """The number of full turns."""
@@ -34,7 +37,7 @@ class Rotation:
         return (
             self.clicks_per_turn + self.start + self.clicks_in_last_turn
         ) % self.clicks_per_turn
-    
+
     def passes_by_in_last_turn(self: Self, position: int) -> bool:
         """Check whether the rotation passes by a position during the last turn."""
         if self.end == position:
@@ -103,7 +106,7 @@ def count_passes_by(position: int, dial: Dial, instructions: Iterable[int]) -> i
         nonlocal count
         count += rotation.full_turns_count
         count += rotation.passes_by_in_last_turn(position)
-    
+
     follow_instructions(dial, instructions, callback)
     return count
 
