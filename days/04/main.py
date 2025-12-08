@@ -54,6 +54,7 @@ def count_removable_scrolls(diagram: np.ndarray, threshold: int) -> np.ndarray:
 def main() -> None:
     diagram = parse_diagram(sys.stdin)
     print(count_accessible_scrolls(diagram, 4))
+    print(count_removable_scrolls(diagram, 4))
 
 
 if __name__ == "__main__":
