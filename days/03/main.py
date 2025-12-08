@@ -12,24 +12,37 @@ def parse_joltages(string: str) -> Generator[int, None, None]:
     return (int(joltage) for joltage in string.strip())
 
 
-def get_bank_joltage(joltages: Iterable[int]) -> int:
+def update_sequence(new_value: int, current_sequence: list[int]) -> list[int]:
+    """Return the highest sequence possible with a new value."""
+    if len(current_sequence) == 2:
+        if new_value >= current_sequence[0]:
+            return [new_value, max(current_sequence)]
+    if new_value >= current_sequence[0]:
+        return [new_value] + update_sequence(current_sequence[0], current_sequence[1:])
+    return current_sequence
+
+
+def sequence_to_joltage(sequence: Iterable[int]) -> int:
+    return int("".join(str(digit) for digit in sequence))
+
+
+def get_bank_joltage(joltages: Iterable[int], size: int) -> int:
     """Get the joltage of a bank."""
     joltages = list(joltages)
-    highest = joltages[-2:]
-    for joltage in reversed(joltages[:-2]):
-        if joltage >= highest[0]:
-            highest = joltage, max(highest)
-    return 10 * highest[0] + highest[1]
+    highest = joltages[-size:]
+    for joltage in reversed(joltages[:-size]):
+        highest = update_sequence(joltage, highest)
+    return sequence_to_joltage(highest)
 
 
-def sum_banks_joltages(banks: Iterable[Iterable[int]]) -> int:
+def sum_banks_joltages(banks: Iterable[Iterable[int]], size: int) -> int:
     """Sum the joltage of a series of banks."""
-    return sum(get_bank_joltage(bank) for bank in banks)
+    return sum(get_bank_joltage(bank, size) for bank in banks)
 
 
 def main() -> None:
     banks = (parse_joltages(string) for string in sys.stdin)
-    print(sum_banks_joltages(banks))
+    print(sum_banks_joltages(banks, 2))
 
 
 if __name__ == "__main__":
