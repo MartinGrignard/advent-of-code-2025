@@ -54,8 +54,11 @@ def sum_invalid_ids(
 
 
 def main() -> None:
-    ranges = (Range.from_string(string) for string in input().split(","))
-    print(sum_invalid_ids(ranges))
+    ranges = itertools.tee(
+        (Range.from_string(string) for string in input().split(",")), 2
+    )
+    print(sum_invalid_ids(ranges[0]))
+    print(sum_invalid_ids(ranges[1], True))
 
 
 if __name__ == "__main__":
