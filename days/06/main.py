@@ -5,6 +5,7 @@ https://adventofcode.com/2025/day/6
 
 import operator
 import re
+import sys
 from typing import Literal, TextIO, TypeAlias
 
 
@@ -37,7 +38,9 @@ def execute_problem(problem: Problem) -> int:
     return result
 
 
-def main() -> None: ...
+def main() -> None:
+    problems = parse_problems(sys.stdin)
+    print(sum(execute_problem(problem) for problem in problems))
 
 
 if __name__ == "__main__":
