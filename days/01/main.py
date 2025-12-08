@@ -4,6 +4,7 @@ https://adventofcode.com/2025/day/1
 """
 
 from dataclasses import dataclass
+import itertools
 import sys
 from typing import Callable, Iterable, Self
 
@@ -36,6 +37,8 @@ class Rotation:
     
     def passes_by_in_last_turn(self: Self, position: int) -> bool:
         """Check whether the rotation passes by a position during the last turn."""
+        if self.end == position:
+            return False
         distance = position - self.start
         if distance < 0 and self.clicks_in_last_turn > 0:
             distance = (position + self.clicks_per_turn) - self.start
@@ -100,15 +103,15 @@ def count_passes_by(position: int, dial: Dial, instructions: Iterable[int]) -> i
         nonlocal count
         count += rotation.full_turns_count
         count += rotation.passes_by_in_last_turn(position)
-        count += rotation.end == position
     
     follow_instructions(dial, instructions, callback)
     return count
 
 
 def main() -> None:
-    instructions = (parse_clicks(string) for string in sys.stdin)
-    print(count_ends_on(0, Dial(100, 50), instructions))
+    instructions = itertools.tee((parse_clicks(string) for string in sys.stdin), 2)
+    print(count_ends_on(0, Dial(100, 50), instructions[0]))
+    print(count_passes_by(0, Dial(100, 50), instructions[1]))
 
 
 if __name__ == "__main__":

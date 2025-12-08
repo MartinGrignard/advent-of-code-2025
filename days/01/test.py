@@ -74,11 +74,10 @@ def test_rotation_passes_by(rotation: Rotation, position: int, expected_answer: 
     ("instructions", "expected_count"),
     [
         ([2], 1),
-        ([1], 1),
+        ([1], 0),
         ([1, 1], 1),
-        ([1, 2], 2),
         ([1, 3], 2),
     ],
 )
 def test_count_passes_by(instructions: Iterable[int], expected_count: int) -> None:
-    assert count_passes_by(1, Dial(2, 0), instructions)
+    assert count_passes_by(1, Dial(2, 0), instructions) == expected_count
