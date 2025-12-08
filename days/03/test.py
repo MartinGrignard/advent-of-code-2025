@@ -28,6 +28,7 @@ def test_parse_joltages(string: str, expected_joltages: Iterable[int]) -> None:
         (parse_joltages("811111111111119"), 89),
         (parse_joltages("234234234234278"), 78),
         (parse_joltages("818181911112111"), 92),
+        (parse_joltages("818981911112111"), 99),
     ],
 )
 def test_get_bank_joltage(bank: Iterable[int], expected_joltage: int) -> None:
