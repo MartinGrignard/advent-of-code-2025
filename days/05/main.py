@@ -29,6 +29,20 @@ class Range:
         return cls(*[int(number) for number in string.split("-")])
 
 
+@dataclass
+class Ranges:
+    """A set of ranges."""
+
+    ranges: list[Range]
+
+    def __contains__(self: Self, value: int) -> bool:
+        """Checks if a value lies within a set of ranges."""
+        for id_range in self.ranges:
+            if value in id_range:
+                return True
+        return False
+
+
 def main() -> None: ...
 
 
