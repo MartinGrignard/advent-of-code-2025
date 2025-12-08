@@ -33,3 +33,16 @@ def test_index_init(
     joltages: Iterable[int], expected_index: dict[int, list[int]]
 ) -> None:
     assert Index(joltages).to_dict() == expected_index
+
+
+@pytest.mark.parametrize(
+    ("nth", "expected_joltage"),
+    [
+        (0, 2),
+        (1, 2),
+        (2, 1),
+    ],
+)
+def test_index_get_nth_highest(nth: int, expected_joltage: int) -> None:
+    index = Index([1, 2, 2])
+    assert index.get_nth_highest(nth) == expected_joltage
