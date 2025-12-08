@@ -42,12 +42,15 @@ def test_range_get_invalid_ids(
 
 
 @pytest.mark.parametrize(
-    ("ranges", "expected_sum"),
+    ("ranges", "allow_more_than_twice", "expected_sum"),
     [
-        ([Range(0, 1)], 0),
-        ([Range(11, 22)], 33),
-        ([Range(0, 1), Range(11, 22)], 33),
+        ([Range(0, 1)], False, 0),
+        ([Range(11, 22)], False, 33),
+        ([Range(0, 1), Range(11, 22)], False, 33),
+        ([Range(95, 115)], True, 210),
     ],
 )
-def test_sum_invalid_ids(ranges: Iterable[Range], expected_sum: int) -> None:
-    assert sum_invalid_ids(ranges) == expected_sum
+def test_sum_invalid_ids(
+    ranges: Iterable[Range], allow_more_than_twice: bool, expected_sum: int
+) -> None:
+    assert sum_invalid_ids(ranges, allow_more_than_twice) == expected_sum
