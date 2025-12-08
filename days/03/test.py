@@ -7,7 +7,7 @@ from typing import Iterable
 
 import pytest
 
-from main import Index, parse_joltages
+from main import get_bank_joltage, parse_joltages
 
 
 @pytest.mark.parametrize(
@@ -22,42 +22,13 @@ def test_parse_joltages(string: str, expected_joltages: Iterable[int]) -> None:
 
 
 @pytest.mark.parametrize(
-    ("joltages", "expected_index"),
+    ("bank", "expected_joltage"),
     [
-        ([1], {1: [0]}),
-        ([1, 2, 3], {1: [0], 2: [1], 3: [2]}),
-        ([1, 2, 2], {1: [0], 2: [1, 2]}),
-    ],
+        (parse_joltages("987654321111111"), 98),
+        (parse_joltages("811111111111119"), 89),
+        (parse_joltages("234234234234278"), 78),
+        (parse_joltages("818181911112111"), 92),
+    ]
 )
-def test_index_init(
-    joltages: Iterable[int], expected_index: dict[int, list[int]]
-) -> None:
-    assert Index(joltages).to_dict() == expected_index
-
-
-@pytest.mark.parametrize(
-    ("nth", "expected_joltage"),
-    [
-        (0, 2),
-        (1, 2),
-        (2, 1),
-    ],
-)
-def test_index_get_nth_highest(nth: int, expected_joltage: int) -> None:
-    index = Index([1, 2, 2])
-    assert index.get_nth_highest(nth) == expected_joltage
-
-
-@pytest.mark.parametrize(
-    ("joltages", "n", "expected_joltages"),
-    [
-        ([1, 2, 2], 1, [2]),
-        ([1, 2, 2], 2, [2, 2]),
-        ([1, 2, 2], 3, [1, 2, 2]),
-        ([1, 3, 2, 4], 3, [3, 2, 4]),
-    ],
-)
-def test_index_get_n_highest(
-    joltages: Iterable[int], n: int, expected_joltages: Iterable[int]
-) -> None:
-    assert Index(joltages).get_n_highest(n) == list(expected_joltages)
+def test_get_bank_joltage(bank: Iterable[int], expected_joltage: int) -> None:
+    assert get_bank_joltage(bank) == expected_joltage
