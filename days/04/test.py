@@ -9,7 +9,12 @@ from typing import TextIO
 import numpy as np
 import pytest
 
-from main import count_accessible_scrolls, parse_diagram, remove_accessible_scrolls
+from main import (
+    count_accessible_scrolls,
+    count_removable_scrolls,
+    parse_diagram,
+    remove_accessible_scrolls,
+)
 
 
 @pytest.mark.parametrize(
@@ -62,3 +67,17 @@ def test_remove_accessible_scrolls(
     diagram: np.ndarray, threshold: int, expected_diagram: np.ndarray
 ) -> None:
     assert np.all(remove_accessible_scrolls(diagram, threshold) == expected_diagram)
+
+
+@pytest.mark.parametrize(
+    ("diagram", "threshold", "expected_count"),
+    [
+        (np.eye(2, dtype=bool), 1, 0),
+        (np.eye(2, dtype=bool), 2, 2),
+        (np.eye(3, dtype=bool), 2, 3),
+    ],
+)
+def test_count_removable_scrolls(
+    diagram: np.ndarray, threshold: int, expected_count: int
+) -> None:
+    assert count_removable_scrolls(diagram, threshold) == expected_count
