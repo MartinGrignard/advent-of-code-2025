@@ -22,7 +22,7 @@ class Range:
     def __eq__(self: Self, other: Self) -> bool:
         """Check whether two ranges are equal."""
         return self.bounds == other.bounds
-    
+
     def __len__(self: Self) -> int:
         """The number of IDs lying within the range."""
         return self.upper - self.lower + 1
@@ -50,7 +50,7 @@ class Ranges:
             if value in id_range:
                 return True
         return False
-    
+
     def __len__(self: Self) -> int:
         return sum(len(id_range) for id_range in self.ranges)
 
