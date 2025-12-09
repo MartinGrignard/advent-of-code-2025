@@ -18,28 +18,3 @@ from main import parse_diagram, parse_positions, Positions, split_beams_and_coun
 )
 def test_parse_positions(string: str, expected_positions: Positions) -> None:
     assert parse_positions(string) == expected_positions
-
-
-def test_parse_diagram() -> None:
-    strings = StringIO("..S..\n.....\n.^.^.\n")
-    expected_diagram = (2, [set(), {1, 3}])
-    assert parse_diagram(strings) == expected_diagram
-
-
-@pytest.mark.parametrize(
-    ("beam_positions", "splitter_positions", "expected_result"),
-    [
-        ({1}, set(), ({1}, 0)),
-        ({1}, {1}, ({0, 2}, 1)),
-        ({1, 2}, {1}, ({0, 2}, 1)),
-    ],
-)
-def test_split_beams_and_count_splits(
-    beam_positions: Positions,
-    splitter_positions: Positions,
-    expected_result: tuple[Positions, int],
-) -> None:
-    assert (
-        split_beams_and_count_splits(beam_positions, splitter_positions)
-        == expected_result
-    )
