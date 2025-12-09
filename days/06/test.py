@@ -10,8 +10,8 @@ import pytest
 from main import (
     Assessment,
     execute_problem,
-    parse_problems,
     parse_problem_horizontally,
+    parse_problem_vertically,
     Problem,
     split_assessments,
 )
@@ -45,6 +45,21 @@ def test_parse_problem_horizontally(
     assessment: Assessment, expected_problem: Problem
 ) -> None:
     assert parse_problem_horizontally(assessment) == expected_problem
+
+
+@pytest.mark.parametrize(
+    ("assessment", "expected_problem"),
+    [
+        (("123", " 45", "  6", "*  "), ("*", (1, 24, 356))),
+        (("328", "64 ", "98 ", "+  "), ("+", (369, 248, 8))),
+        ((" 51", "387", "215", "*  "), ("*", (32, 581, 175))),
+        (("64 ", "23 ", "314", "+  "), ("+", (623, 431, 4))),
+    ],
+)
+def test_parse_problem_vertically(
+    assessment: Assessment, expected_problem: Problem
+) -> None:
+    assert parse_problem_vertically(assessment) == expected_problem
 
 
 @pytest.mark.parametrize(
