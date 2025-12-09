@@ -7,7 +7,14 @@ from io import StringIO
 
 import pytest
 
-from main import execute_problem, parse_problems, Problem, split_assessments
+from main import (
+    Assessment,
+    execute_problem,
+    parse_problems,
+    parse_problem_horizontally,
+    Problem,
+    split_assessments,
+)
 
 
 def test_parse_problems() -> None:
@@ -32,6 +39,21 @@ def test_split_assessments() -> None:
     res = list(split_assessments(strings))
     print(res)
     assert res == expected_assessments
+
+
+@pytest.mark.parametrize(
+    ("assessment", "expected_problem"),
+    [
+        (("123", " 45", "  6", "*  "), ("*", (123, 45, 6))),
+        (("328", "64 ", "98 ", "+  "), ("+", (328, 64, 98))),
+        ((" 51", "387", "215", "*  "), ("*", (51, 387, 215))),
+        (("64 ", "23 ", "314", "+  "), ("+", (64, 23, 314))),
+    ],
+)
+def test_parse_problem_horizontally(
+    assessment: Assessment, expected_problem: Problem
+) -> None:
+    assert parse_problem_horizontally(assessment) == expected_problem
 
 
 @pytest.mark.parametrize(
