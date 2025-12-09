@@ -6,7 +6,7 @@ https://adventofcode.com/2025/day/7
 from io import StringIO
 import pytest
 
-from main import parse_diagram, parse_positions, Positions, split_beams
+from main import parse_diagram, parse_positions, Positions, split_beams_and_count_splits
 
 
 @pytest.mark.parametrize(
@@ -27,16 +27,19 @@ def test_parse_diagram() -> None:
 
 
 @pytest.mark.parametrize(
-    ("beam_positions", "splitter_positions", "expected_positions"),
+    ("beam_positions", "splitter_positions", "expected_result"),
     [
-        ({1}, set(), {1}),
-        ({1}, {1}, {0, 2}),
-        ({1, 2}, {1}, {0, 2}),
+        ({1}, set(), ({1}, 0)),
+        ({1}, {1}, ({0, 2}, 1)),
+        ({1, 2}, {1}, ({0, 2}, 1)),
     ],
 )
-def test_split_beams(
+def test_split_beams_and_count_splits(
     beam_positions: Positions,
     splitter_positions: Positions,
-    expected_positions: Positions,
+    expected_result: tuple[Positions, int],
 ) -> None:
-    assert split_beams(beam_positions, splitter_positions) == expected_positions
+    assert (
+        split_beams_and_count_splits(beam_positions, splitter_positions)
+        == expected_result
+    )
