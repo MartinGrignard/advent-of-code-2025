@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/6
 """
 
+import itertools
 import operator
 import re
 import sys
@@ -53,13 +54,12 @@ def execute_problem(problem: Problem) -> int:
 
 
 def main() -> None:
-    assessments = split_assessments(sys.stdin)
-    print(
-        sum(
-            execute_problem(parse_problem_horizontally(assessment))
-            for assessment in assessments
-        )
-    )
+    assessments = itertools.tee(split_assessments(sys.stdin))
+    for parser, assessments in zip(
+        [parse_problem_horizontally, parse_problem_vertically],
+        itertools.tee(split_assessments(sys.stdin)),
+    ):
+        print(sum(execute_problem(parser(assessment)) for assessment in assessments))
 
 
 if __name__ == "__main__":
