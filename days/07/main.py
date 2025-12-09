@@ -28,6 +28,16 @@ def parse_diagram(strings: TextIO) -> tuple[int, list[Positions]]:
     return beam_position, splitter_positions
 
 
+def split_beams(beam_positions: Positions, splitter_positions: Positions) -> Positions:
+    """Let the beams pass through a set of splitters."""
+    to_be_splitted_beam_positions = beam_positions & splitter_positions
+    non_splitted_beam_positions = beam_positions - to_be_splitted_beam_positions
+    splitted_beam_positions = set()
+    for position in to_be_splitted_beam_positions:
+        splitted_beam_positions.update({position - 1, position + 1})
+    return non_splitted_beam_positions | splitted_beam_positions
+
+
 def main() -> None: ...
 
 
