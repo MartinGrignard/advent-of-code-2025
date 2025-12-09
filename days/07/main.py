@@ -96,7 +96,7 @@ def count_timelines(tree: Tree) -> int:
             timelines_count += inner(child)
         visited_nodes[node] = timelines_count
         return timelines_count
-    
+
     return 1 + inner(tree)
 
 
