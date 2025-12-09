@@ -43,7 +43,12 @@ def parse_tree(strings: TextIO) -> Tree:
         next_level = {}
         for position in non_splitted_beam_positions:
             next_level[position] = current_level[position]
-        for current_position, next_position in itertools.chain(*[((position, position - 1), (position, position + 1)) for position in splitted_beam_positions]):
+        for current_position, next_position in itertools.chain(
+            *[
+                ((position, position - 1), (position, position + 1))
+                for position in splitted_beam_positions
+            ]
+        ):
             if next_position not in next_level:
                 next_level[next_position] = Tree()
             current_level[current_position].children.append(next_level[next_position])
@@ -75,7 +80,7 @@ def count_beam_splits(tree: Tree) -> int:
             count += 1
         visited_nodes.add(node)
         return True
-    
+
     dfs(tree, callback)
     return count
 
@@ -90,7 +95,7 @@ def count_timelines(tree: Tree) -> int:
             return False
         count += len(node.children) - 1
         return True
-    
+
     dfs(tree, callback)
     return count
 
