@@ -33,6 +33,12 @@ def parse_problem_horizontally(assessment: Assessment) -> Problem:
     return assessment[-1].strip(), tuple(int(number) for number in assessment[:-1])
 
 
+def parse_problem_vertically(assessment: Assessment) -> Problem:
+    """Parse problems from a text."""
+    rotated_numbers = ["".join(row) for row in zip(*assessment[:-1])]
+    return assessment[-1].strip(), tuple(int(number) for number in rotated_numbers)
+
+
 def execute_problem(problem: Problem) -> int:
     """Execute a problem."""
     operation = {
