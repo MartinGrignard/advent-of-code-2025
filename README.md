@@ -14,6 +14,7 @@ This repository contains my solutions to the [Advent of Code 2025][advent-of-cod
 | [Day 4: Printing Department](https://adventofcode.com/2025/day/4)  | [📄](./days/04/main.py) | 🌟🌟 |
 | [Day 5: Cafeteria](https://adventofcode.com/2025/day/5)  | [📄](./days/05/main.py) | 🌟🌟 |
 | [Day 6: Trash Compactor](https://adventofcode.com/2025/day/6)  | [📄](./days/06/main.py) | 🌟🌟 |
+| [Day 7: Laboratories](https://adventofcode.com/2025/day/7)  | [📄](./days/07/main.py) | 🌟🌟 |
 
 ___
 
