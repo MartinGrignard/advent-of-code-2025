@@ -58,13 +58,10 @@ def parse_tree(strings: TextIO) -> Tree:
 
 def dfs(tree: Tree, callback: Callable[[Tree], bool]) -> None:
     """Traverse a tree."""
-    nodes_to_traverse = [tree]
-    while nodes_to_traverse:
-        node = nodes_to_traverse.pop()
-        if not callback(node):
-            continue
-        for child in node.children:
-            nodes_to_traverse.append(child)
+    if not callback(tree):
+        return
+    for node in tree.children:
+        dfs(node, callback)
 
 
 def count_beam_splits(tree: Tree) -> int:
@@ -87,17 +84,20 @@ def count_beam_splits(tree: Tree) -> int:
 
 def count_timelines(tree: Tree) -> int:
     """Count the possible timelines."""
-    count = 1
+    visited_nodes: dict[Tree, int] = {}
 
-    def callback(node: Tree) -> bool:
-        nonlocal count
+    def inner(node: Tree) -> int:
         if not node.children:
-            return False
-        count += len(node.children) - 1
-        return True
-
-    dfs(tree, callback)
-    return count
+            return 0
+        if node in visited_nodes:
+            return visited_nodes[node]
+        timelines_count = len(node.children) - 1
+        for child in node.children:
+            timelines_count += inner(child)
+        visited_nodes[node] = timelines_count
+        return timelines_count
+    
+    return 1 + inner(tree)
 
 
 def main() -> None:
