@@ -16,12 +16,8 @@ EMPTY_SPACE = "."
 
 
 class Tree:
-    def __init__(self: Self, depth: int, position: int, children: list[Self] | None = None) -> None:
-        self.depth, self.position = depth, position
+    def __init__(self: Self, children: list[Self] | None = None) -> None:
         self.children = children or []
-    
-    def __repr__(self: Self) -> str:
-        return f"Tree(depth={self.depth}, pos={self.position})"
 
 
 def parse_positions(string: str) -> Positions:
@@ -36,7 +32,7 @@ def parse_positions(string: str) -> Positions:
 def parse_tree(strings: TextIO) -> Tree:
     beam_position = parse_positions(next(strings).strip()).pop()
     depth = 0
-    root = Tree(0, beam_position)
+    root = Tree()
     current_level = {beam_position: root}
     for string in strings:
         depth += 1
@@ -46,11 +42,10 @@ def parse_tree(strings: TextIO) -> Tree:
         non_splitted_beam_positions = beam_positions - splitted_beam_positions
         next_level = {}
         for position in non_splitted_beam_positions:
-            next_level[position] = Tree(depth, position)
-            current_level[position].children.append(next_level[position])
+            next_level[position] = current_level[position]
         for current_position, next_position in itertools.chain(*[((position, position - 1), (position, position + 1)) for position in splitted_beam_positions]):
             if next_position not in next_level:
-                next_level[next_position] = Tree(depth, next_position)
+                next_level[next_position] = Tree()
             current_level[current_position].children.append(next_level[next_position])
         current_level = next_level
     return root
@@ -70,15 +65,15 @@ def dfs(tree: Tree, callback: Callable[[Tree], bool]) -> None:
 def count_beam_splits(tree: Tree) -> int:
     """Count the number of beam splits."""
     count = 0
-    visited_nodes: set[tuple[int, int]] = set()
+    visited_nodes: set[Tree] = set()
 
     def callback(node: Tree) -> bool:
         nonlocal count
-        if (node.depth, node.position) in visited_nodes:
+        if node in visited_nodes:
             return False
         if len(node.children) > 1:
             count += 1
-        visited_nodes.add((node.depth, node.position))
+        visited_nodes.add(node)
         return True
     
     dfs(tree, callback)
