@@ -33,16 +33,6 @@ def parse_problem_horizontally(assessment: Assessment) -> Problem:
     return assessment[-1].strip(), tuple(int(number) for number in assessment[:-1])
 
 
-def parse_problems(strings: TextIO) -> list[Problem]:
-    """Parse problems from a text."""
-    rows = [
-        re.sub(REPLACE_SPACES_PATTERN, " ", string).strip().split(" ")
-        for string in strings
-    ]
-    values = zip(*[[int(number) for number in row] for row in rows[:-1]])
-    return list(zip(rows[-1], values))
-
-
 def execute_problem(problem: Problem) -> int:
     """Execute a problem."""
     operation = {
@@ -57,8 +47,13 @@ def execute_problem(problem: Problem) -> int:
 
 
 def main() -> None:
-    problems = parse_problems(sys.stdin)
-    print(sum(execute_problem(problem) for problem in problems))
+    assessments = split_assessments(sys.stdin)
+    print(
+        sum(
+            execute_problem(parse_problem_horizontally(assessment))
+            for assessment in assessments
+        )
+    )
 
 
 if __name__ == "__main__":
