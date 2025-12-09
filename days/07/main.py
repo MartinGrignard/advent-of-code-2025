@@ -3,10 +3,12 @@
 https://adventofcode.com/2025/day/7
 """
 
+import sys
 from typing import TextIO, TypeAlias
 
 
 Positions: TypeAlias = set[int]
+Diagram: TypeAlias = tuple[int, list[Positions]]
 
 
 EMPTY_SPACE = "."
@@ -42,7 +44,20 @@ def split_beams_and_count_splits(
     )
 
 
-def main() -> None: ...
+def count_splits(diagram: Diagram) -> int:
+    """Count the total number of splits."""
+    count = 0
+    beam_positions = {diagram[0]}
+    splitter_positions = diagram[1]
+    for row in splitter_positions:
+        beam_positions, splits = split_beams_and_count_splits(beam_positions, row)
+        count += splits
+    return count
+
+
+def main() -> None:
+    diagram = parse_diagram(sys.stdin)
+    print(count_splits(diagram))
 
 
 if __name__ == "__main__":
