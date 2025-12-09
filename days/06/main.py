@@ -28,6 +28,11 @@ def split_assessments(strings: TextIO) -> Generator[Assessment, None, None]:
     yield tuple("".join(row).replace("\n", "") for row in zip(*assessment))
 
 
+def parse_problem_horizontally(assessment: Assessment) -> Problem:
+    """Parse problems from a text."""
+    return assessment[-1].strip(), tuple(int(number) for number in assessment[:-1])
+
+
 def parse_problems(strings: TextIO) -> list[Problem]:
     """Parse problems from a text."""
     rows = [
