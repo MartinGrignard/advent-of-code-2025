@@ -58,6 +58,20 @@ def join_boxes(circuits: list[Circuit], boxes: PositionsPair) -> bool:
     return True
 
 
+def join_n_closest_boxes(
+    sorted_junctions: Iterable[PositionsPair], n: int
+) -> list[Circuit]:
+    """Create circuits using the n first closest pairs of boxes."""
+    n_junctions = 0
+    circuits: list[Circuit] = []
+    junctions = iter(sorted_junctions)
+    while n_junctions < n:
+        if join_boxes(circuits, next(junctions)):
+            n_junctions += 1
+            continue
+    return circuits
+
+
 def main() -> None:
     from pprint import pprint as print
 
