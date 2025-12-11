@@ -3,6 +3,7 @@
 https://adventofcode.com/2025/day/8
 """
 
+from typing import Iterable
 import pytest
 from main import (
     Circuit,
@@ -10,6 +11,7 @@ from main import (
     compute_distance,
     compute_pairwise_distances,
     join_boxes,
+    join_n_closest_boxes,
     parse_position,
     Position,
 )
@@ -91,3 +93,22 @@ def test_join_boxes(
 ) -> None:
     assert join_boxes(circuits, boxes) == expected_answer
     assert circuits == expected_circuits
+
+
+@pytest.mark.parametrize(
+    ("junctions", "expected_circuits"),
+    [
+        (
+            [((0, 0, 0), (1, 0, 0)), ((0, 0, 0), (0, 1, 0))],
+            [{(0, 0, 0), (1, 0, 0), (0, 1, 0)}],
+        ),
+        (
+            [((0, 0, 0), (1, 0, 0)), ((0, 0, 0), (1, 0, 0)), ((0, 0, 0), (0, 1, 0))],
+            [{(0, 0, 0), (1, 0, 0), (0, 1, 0)}],
+        ),
+    ],
+)
+def test_join_n_closest_boxes(
+    junctions: Iterable[PositionsPair], expected_circuits: list[Circuit]
+) -> None:
+    assert join_n_closest_boxes(junctions, 2) == expected_circuits
