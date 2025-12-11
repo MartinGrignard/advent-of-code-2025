@@ -4,6 +4,7 @@ https://adventofcode.com/2025/day/8
 """
 
 import itertools
+from math import prod
 import sys
 from typing import Iterable, TypeAlias
 
@@ -74,10 +75,19 @@ def join_n_closest_boxes(
 
 def main() -> None:
     from pprint import pprint as print
-
     positions = [parse_position(string) for string in sys.stdin]
-    distances = sorted(compute_pairwise_distances(positions), key=lambda it: it[1])
-    print(distances)
+    distances = sorted(
+        compute_pairwise_distances(positions),
+        key=lambda junction_distance: junction_distance[1],
+    )
+    n_junctions = 10 if len(positions) == 20 else 1000
+    circuits = sorted(
+        join_n_closest_boxes((junction for junction, _ in distances), n_junctions),
+        key=lambda circuit: len(circuit),
+        reverse=True,
+    )
+    print(list((len(circuit), circuit) for circuit in circuits[:3]))
+    print(prod(len(circuit) for circuit in circuits[:3]))
 
 
 if __name__ == "__main__":
