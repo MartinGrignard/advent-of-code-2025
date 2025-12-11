@@ -3,11 +3,13 @@
 https://adventofcode.com/2025/day/8
 """
 
+import itertools
 import sys
-from typing import TypeAlias
+from typing import Iterable, TypeAlias
 
 
 Position: TypeAlias = tuple[int, int, int]
+PositionsPair: TypeAlias = tuple[Position, Position]
 
 
 def parse_position(string: str) -> Position:
@@ -16,7 +18,7 @@ def parse_position(string: str) -> Position:
 
 
 def compute_distance(from_position: Position, to_position: Position) -> float:
-    """Compute the Euclidean distance between two points."""
+    """Compute the squarred Euclidean distance between two points."""
     return sum(
         [
             (to_coord - from_coord) ** 2
@@ -24,6 +26,21 @@ def compute_distance(from_position: Position, to_position: Position) -> float:
         ]
     )
 
+
+def compute_pairwise_distances(
+    positions: Iterable[Position],
+) -> list[tuple[PositionsPair, float]]:
+    """Compute the pairwise distances between a series of positions."""
+    distances: list[tuple[PositionsPair, float]] = []
+    for from_position, to_position in itertools.combinations(positions, 2):
+        from_position, to_position = (
+            min(from_position, to_position),
+            max(from_position, to_position),
+        )
+        distances.append(
+            ((from_position, to_position), compute_distance(from_position, to_position))
+        )
+    return distances
 
 def main() -> None:
     positions = [parse_position(string) for string in sys.stdin]
