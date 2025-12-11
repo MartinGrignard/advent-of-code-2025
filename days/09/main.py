@@ -28,5 +28,11 @@ def compute_pairwise_area(
         yield from_tile, to_tile, area
 
 
+def main() -> None:
+    tiles = (parse_tile(string) for string in sys.stdin)
+    tiles_and_areas = compute_pairwise_area(tiles)
+    print(max(area for _from, _to, area in tiles_and_areas))
+
+
 if __name__ == "__main__":
     main()
