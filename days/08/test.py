@@ -4,7 +4,15 @@ https://adventofcode.com/2025/day/8
 """
 
 import pytest
-from main import compute_distance, compute_pairwise_distances, parse_position, Position
+from main import (
+    Circuit,
+    PositionsPair,
+    compute_distance,
+    compute_pairwise_distances,
+    join_boxes,
+    parse_position,
+    Position,
+)
 
 
 @pytest.mark.parametrize(
@@ -43,3 +51,43 @@ def test_compute_pairwise_distances() -> None:
         (((0, 0, 0), (0, 1, 0)), 1),
         (((0, 1, 0), (1, 0, 0)), 2),
     ]
+
+
+@pytest.mark.parametrize(
+    ("circuits", "boxes", "expected_circuits", "expected_answer"),
+    [
+        ([], ((0, 0, 0), (1, 0, 0)), [{(0, 0, 0), (1, 0, 0)}], True),
+        (
+            [{(0, 0, 0), (1, 0, 0), (0, 1, 0)}],
+            ((0, 0, 0), (1, 0, 0)),
+            [{(0, 0, 0), (1, 0, 0), (0, 1, 0)}],
+            False,
+        ),
+        (
+            [{(0, 0, 0), (0, 1, 0)}],
+            ((0, 0, 0), (1, 0, 0)),
+            [{(0, 0, 0), (0, 1, 0), (1, 0, 0)}],
+            True,
+        ),
+        (
+            [{(0, 1, 0), (0, 0, 1)}],
+            ((0, 0, 0), (1, 0, 0)),
+            [{(0, 1, 0), (0, 0, 1)}, {(0, 0, 0), (1, 0, 0)}],
+            True,
+        ),
+    ],
+    ids=[
+        "no_circuit",
+        "existing_circuit",
+        "joint_circuit",
+        "disjoint_circuit",
+    ],
+)
+def test_join_boxes(
+    circuits: list[Circuit],
+    boxes: PositionsPair,
+    expected_circuits: list[Circuit],
+    expected_answer,
+) -> None:
+    assert join_boxes(circuits, boxes) == expected_answer
+    assert circuits == expected_circuits
