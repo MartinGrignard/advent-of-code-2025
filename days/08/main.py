@@ -42,8 +42,10 @@ def compute_pairwise_distances(
         )
     return distances
 
+
 def main() -> None:
     positions = [parse_position(string) for string in sys.stdin]
+    distances = sorted(compute_pairwise_distances(positions), key=lambda it: it[1])
 
 
 if __name__ == "__main__":
