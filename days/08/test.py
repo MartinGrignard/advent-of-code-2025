@@ -4,7 +4,7 @@ https://adventofcode.com/2025/day/8
 """
 
 import pytest
-from main import compute_distance, parse_position, Position
+from main import compute_distance, compute_pairwise_distances, parse_position, Position
 
 
 @pytest.mark.parametrize(
@@ -30,3 +30,16 @@ def test_compute_distance(
     between_positions: tuple[Position, Position], expected_distance: float
 ) -> None:
     assert compute_distance(*between_positions) == expected_distance
+
+
+def test_compute_pairwise_distances() -> None:
+    positions = [
+        (0, 0, 0),
+        (1, 0, 0),
+        (0, 1, 0),
+    ]
+    assert compute_pairwise_distances(positions) == [
+        (((0, 0, 0), (1, 0, 0)), 1),
+        (((0, 0, 0), (0, 1, 0)), 1),
+        (((0, 1, 0), (1, 0, 0)), 2),
+    ]
