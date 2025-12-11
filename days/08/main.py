@@ -10,6 +10,7 @@ from typing import Iterable, TypeAlias
 
 Position: TypeAlias = tuple[int, int, int]
 PositionsPair: TypeAlias = tuple[Position, Position]
+Circuit: TypeAlias = set[Position]
 
 
 def parse_position(string: str) -> Position:
@@ -43,9 +44,26 @@ def compute_pairwise_distances(
     return distances
 
 
+def join_boxes(circuits: list[Circuit], boxes: PositionsPair) -> bool:
+    """Add boxes to the circuits and returns if it results in an update."""
+    new_circuit = set(boxes)
+    for circuit_id, circuit in enumerate(circuits):
+        intersection = circuit & new_circuit
+        if len(intersection) == 2:
+            return False
+        if len(intersection) == 1:
+            circuits[circuit_id] = circuit | new_circuit
+            return True
+    circuits.append(new_circuit)
+    return True
+
+
 def main() -> None:
+    from pprint import pprint as print
+
     positions = [parse_position(string) for string in sys.stdin]
     distances = sorted(compute_pairwise_distances(positions), key=lambda it: it[1])
+    print(distances)
 
 
 if __name__ == "__main__":
